@@ -1,0 +1,34 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    autoheal: "true"
+    metallb.universe.tf/allow-shared-ip: "key-to-share-1.2.3.4"
+  name: toc
+spec:
+  type: ClusterIP
+  selector:
+    app: toc
+  ports:
+    - name: toc-svc
+      protocol: TCP
+      port: 7000
+      targetPort: 7000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    autoheal: "true"
+    metallb.universe.tf/allow-shared-ip: "key-to-share-1.2.3.4"
+  name: toc-web
+spec:
+  type: ClusterIP
+  selector:
+    app: toc-web
+  ports:
+    - name: toc-web-svc
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "toc.fullname" . }}-tenant-operations-controller
+  labels:
+    app: toc
+  {{- include "toc.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.tenantOperationsController.replicas }}
+  selector:
+    matchLabels:
+      app: toc
+    {{- include "toc.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: toc
+      {{- include "toc.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: MONGO_DATABASE_NAME
+          value: installs
+        - name: MONGO_URL
+          value: mongodb://root-user:password@mongo:27017
+        - name: MONGO_USER
+          value: root-user
+        - name: MONGO_PASS
+          value: password
+        - name: AWS_ROLE_ARN
+          value: arn:aws:iam::780274387598:role/golang-application
+        - name: AWS_NODE_ARN
+          value: arn:aws:iam::780274387598:role/golang-application-ec2
+        - name: AWS_SECURITY_GROUPS
+          value: sg-a81f17b3
+        - name: AWS_SUBNETS
+          value: subnet-eeb6aca3,subnet-1dcd9a42,subnet-ad6a20cb
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ .Values.kubernetesClusterDomain }}
+        image: {{ .Values.tenantOperationsController.toc.image.repository }}:{{ .Values.tenantOperationsController.toc.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: Always
+        name: toc
+        ports:
+        - containerPort: 7000
+        resources: {}
+        volumeMounts:
+        - mountPath: /root/.aws
+          name: aws
+      serviceAccountName: {{ include "toc.fullname" . }}-toc-sa
+      volumes:
+      - name: aws
+        projected:
+          sources:
+          - secret:
+              name: {{ include "toc.fullname" . }}-aws-credentials-secret
+          - secret:
+              name: {{ include "toc.fullname" . }}-aws-config-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "toc.fullname" . }}-tenant-operations-controller-web
+  labels:
+    app: toc-web
+  {{- include "toc.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.tenantOperationsControllerWeb.replicas }}
+  selector:
+    matchLabels:
+      app: toc-web
+    {{- include "toc.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: toc-web
+      {{- include "toc.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ .Values.kubernetesClusterDomain }}
+        image: {{ .Values.tenantOperationsControllerWeb.tocWeb.image.repository }}:{{ .Values.tenantOperationsControllerWeb.tocWeb.image.tag
+          | default .Chart.AppVersion }}
+        name: toc-web
+        ports:
+        - containerPort: 8080
+        resources: {}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "toc.fullname" . }}-toc-sa
+  labels:
+  {{- include "toc.labels" . | nindent 4 }}

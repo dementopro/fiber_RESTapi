@@ -1,0 +1,624 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Tenant Operations Controller",
+    "description": "Documentation for BLiNQ Networks Tenant Operation controller Internal Use",
+    "version": "1.0.0",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/list/installs": {
+      "get": {
+        "summary": "GET /list/installs",
+        "operationId": "ListInstalls",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Deployment using Helm"
+        ]
+      }
+    },
+    "/delete": {
+      "delete": {
+        "summary": "DELETE /delete",
+        "operationId": "DeleteInstall",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/deleteHelmBody"
+            }
+          }
+        ],
+        "tags": [
+          "Deployment using Helm"
+        ]
+      }
+    },
+    "/deploy": {
+      "post": {
+        "summary": "POST /deploy",
+        "operationId": "DeployHelm",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/deployHelmBody"
+            }
+          }
+        ],
+        "tags": [
+          "Deployment using Helm"
+        ]
+      }
+    },
+    "/tuneDeploy": {
+      "post": {
+        "summary": "POST /tuneDeploy",
+        "operationId": "TuneDeploy",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/tuneDeployBody"
+            }
+          }
+        ],
+        "tags": [
+          "Deployment using Helm"
+        ]
+      }
+    },
+    "/deploy/manifest": {
+      "post": {
+        "summary": "POST /deploy/manifest",
+        "operationId": "DeployManifest",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/deployK8sBody"
+            }
+          }
+        ],
+        "tags": [
+          "Deployment using kubernetes manifests"
+        ]
+      }
+    },
+    "/list/k8s/installs": {
+      "get": {
+        "summary": "GET /list/k8s/installs",
+        "operationId": "ListK8sInstalls",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Deployment using kubernetes manifests"
+        ]
+      }
+    },
+    "/delete/k8s/{id}": {
+      "delete": {
+        "summary": "DELETE /delete/k8s:id",
+        "operationId": "DeleteK8sManifest",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ],
+        "tags": [
+          "Deployment using kubernetes manifests"
+        ]
+      }
+    },
+    "/eks/create": {
+      "post": {
+        "summary": "POST /eks/create",
+        "operationId": "CreateEKS",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createEKS"
+            }
+          }
+        ],
+        "tags": [
+          "EKS Cluster Operations"
+        ]
+      }
+    },
+    "/eks/describe": {
+      "post": {
+        "summary": "POST /eks/describe",
+        "operationId": "describeEKS",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/describeEKS"
+            }
+          }
+        ],
+        "tags": [
+          "EKS Cluster Operations"
+        ]
+      }
+    },
+    "/eks/list": {
+      "get": {
+        "summary": "GET /eks/list",
+        "operationId": "ListEKS",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/listEKS"
+            }
+          }
+        ],
+        "tags": [
+          "EKS Cluster Operations"
+        ]
+      }
+    },
+    "/eks/update": {
+      "post": {
+        "summary": "POST /eks/update",
+        "operationId": "updateEKS",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updateEKS"
+            }
+          }
+        ],
+        "tags": [
+          "EKS Cluster Operations"
+        ]
+      }
+    },
+    "/eks/delete": {
+      "delete": {
+        "summary": "DELETE /eks/delete",
+        "operationId": "DeleteEKS",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/deleteEKS"
+            }
+          }
+        ],
+        "tags": [
+          "EKS Cluster Operations"
+        ]
+      }
+    },
+    "/nodegroup/create": {
+      "post": {
+        "summary": "POST /nodegroup/create",
+        "operationId": "CreateNode",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createNode"
+            }
+          }
+        ],
+        "tags": [
+          "EKS Cluster Operations"
+        ]
+      }
+    },
+    "/nodegroup/describe": {
+      "post": {
+        "summary": "POST /nodegroup/describe",
+        "operationId": "describeNode",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/describeNode"
+            }
+          }
+        ],
+        "tags": [
+          "EKS Cluster Operations"
+        ]
+      }
+    },
+    "/nodegroup/delete": {
+      "delete": {
+        "summary": "DELETE /nodegroup/delete",
+        "operationId": "DeleteNode",
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/deleteNode"
+            }
+          }
+        ],
+        "tags": [
+          "EKS Cluster Operations"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "deployHelmBody": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "string"
+        },
+        "tenantId": {
+          "type": "string",
+          "format": "string"
+        },
+        "repoName": {
+          "type": "string",
+          "format": "string"
+        },
+        "chartName": {
+          "type": "string",
+          "format": "string"
+        },
+        "namespace": {
+          "type": "string",
+          "format": "string"
+        },
+        "companyName": {
+          "type": "string",
+          "format": "string"
+        },
+        "values": {
+          "items": {
+            "type": "string"
+          },
+          "format": "string",
+          "example": [
+            "controller.ingressClassResource.default=false",
+            "controller.metrics.enabled=true",
+            "controller.ingressClass=internal-nginx"
+          ]
+        },
+        "clusterName": {
+          "type": "string",
+          "format": "string"
+        },
+        "region": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    },
+    "deployK8sBody": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "tenantId": {
+          "type": "string",
+          "format": "string"
+        },
+        "companyName": {
+          "type": "string",
+          "format": "string"
+        },
+        "namespace": {
+          "type": "string",
+          "format": "string"
+        },
+        "manifest": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    },
+    "tuneDeployBody": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "installId": {
+          "type": "boolean",
+          "format": "string"
+        },
+        "enable": {
+          "type": "boolean",
+          "format": "string"
+        }
+      }
+    },
+    "createEKS": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "clusterName": {
+          "type": "string",
+          "format": "string"
+        },
+        "region": {
+          "type": "string",
+          "format": "string"
+        },
+        "version": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    },
+    "describeEKS": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "clusterName": {
+          "type": "string",
+          "format": "string"
+        },
+        "region": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    },
+    "updateEKS": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "clusterName": {
+          "type": "string",
+          "format": "string"
+        },
+        "region": {
+          "type": "string",
+          "format": "string"
+        },
+        "clusterId": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    },
+    "listEKS": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "region": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    },
+    "deleteEKS": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "clusterName": {
+          "type": "string",
+          "format": "string"
+        },
+        "region": {
+          "type": "string",
+          "format": "string"
+        },
+        "clusterId": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    },
+    "createNode": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "clusterName": {
+          "type": "string",
+          "format": "string"
+        },
+        "clusterId": {
+          "type": "string",
+          "format": "string"
+        },
+        "region": {
+          "type": "string",
+          "format": "string"
+        },
+        "diskSize": {
+          "type": "integer",
+          "format": "integer"
+        },
+        "instanceType": {
+          "type": "string",
+          "format": "string"
+        },
+        "nodeGroupName": {
+          "type": "string",
+          "format": "string"
+        },
+        "desizedSize": {
+          "type": "integer",
+          "format": "integer"
+        },
+        "maxSize": {
+          "type": "integer",
+          "format": "integer"
+        },
+        "minSize": {
+          "type": "integer",
+          "format": "integer"
+        }
+      }
+    },
+    "describeNode": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "clusterName": {
+          "type": "string",
+          "format": "string"
+        },
+        "nodeGroupName": {
+          "type": "string",
+          "format": "string"
+        },
+        "region": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    },
+    "deleteHelmBody": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "clusterName": {
+          "type": "string",
+          "format": "string"
+        },
+        "installId": {
+          "type": "string",
+          "format": "string"
+        },
+        "region": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    },
+    "deleteNode": {
+      "type": "object",
+      "format": "string",
+      "properties": {
+        "clusterName": {
+          "type": "string",
+          "format": "string"
+        },
+        "nodeGroupName": {
+          "type": "string",
+          "format": "string"
+        },
+        "region": {
+          "type": "string",
+          "format": "string"
+        }
+      }
+    }
+  }
+}

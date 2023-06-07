@@ -1,0 +1,235 @@
+swagger: '2.0'
+info:
+  title: Tenant Operations Controller
+  description: Documentation for Tenant Operation controller Internal Use
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /tenant/create:
+    post:
+      summary: POST Create tenant
+      operationId: tenantCreate
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/tenantCreate'
+      tags:
+        - Tenant Operations
+  /tenant/delete:
+    delete:
+      summary: DELETE tenant
+      operationId: tenantDelete
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/tenantDelete'
+      tags:
+        - Tenant Operations
+  /tenant/list:
+    get:
+      summary: GET All tenant lists in Database
+      operationId: tenantList
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Tenant Operations
+  /tenant/get/{id}:
+    get:
+      summary: GET Individual tenant details
+      operationId: GetTenantID
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: string
+      tags:
+        - Tenant Operations
+  /tenant/update:
+    put:
+      summary: Update tenant details
+      operationId: tenantUpdate
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/tenantUpdate'
+      tags:
+        - Tenant Operations
+  /tenant/status:
+    post:
+      summary: Get live status of tenant
+      operationId: premiumDeployStatus
+      responses:
+        '200':
+          description: ''
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/tenantStatus'
+      tags:
+        - Tenant Operations
+definitions:
+  tenantCreate:
+    type: object
+    format: string
+    properties:
+      id:
+        type: string
+        format: string
+      name:
+        type: string
+        format: string
+      admins:
+        type: array
+        items:
+          type: object
+          format: string
+          properties:
+            firstName:
+              type: string
+              format: string
+            lastName:
+              type: string
+              format: string
+            email:
+              type: string
+              format: string
+            phone:
+              type: string
+              format: string
+      organization:
+        type: object
+        format: string
+        properties:
+          name:
+            type: string
+            format: string
+          primaryContact:
+            type: string
+            format: string
+          address:
+            type: object
+            format: string
+            properties:
+              country:
+                type: string
+                format: string
+              state:
+                type: string
+                format: string
+              city:
+                type: string
+                format: string
+              address1:
+                type: string
+                format: string
+              address2:
+                type: string
+                format: string
+              postalCode:
+                type: string
+                format: string
+  tenantDelete:
+    type: object
+    format: string
+    properties:
+      id:
+        type: string
+        format: string
+  tenantUpdate:
+    type: object
+    format: string
+    properties:
+      id:
+        type: string
+        format: string
+      name:
+        type: string
+        format: string
+      admins:
+        type: array
+        items:
+          type: object
+          format: string
+          properties:
+            firstName:
+              type: string
+              format: string
+            lastName:
+              type: string
+              format: string
+            email:
+              type: string
+              format: string
+            phone:
+              type: string
+              format: string
+      organization:
+        type: object
+        format: string
+        properties:
+          tenantName:
+            type: string
+            format: string
+          primaryContact:
+            type: string
+            format: string
+          address:
+            type: object
+            format: string
+            properties:
+              country:
+                type: string
+                format: string
+              state:
+                type: string
+                format: string
+              city:
+                type: string
+                format: string
+              address1:
+                type: string
+                format: string
+              address2:
+                type: string
+                format: string
+              postalCode:
+                type: string
+                format: string
+  tenantStatus:
+    type: object
+    format: string
+    properties:
+      id:
+        type: string
+        format: string

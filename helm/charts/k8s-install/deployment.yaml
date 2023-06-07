@@ -1,0 +1,74 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tenant-operations-controller
+  labels:
+    app: toc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: toc
+  template:
+    metadata:
+      labels:
+        app: toc
+    spec:
+      serviceAccountName: toc-sa
+      containers:
+        - name: toc
+          image: radhakrishna0018/deployer:0.0.11
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 7000
+          env:
+            - name: MONGO_DATABASE_NAME
+              value: "installs"
+            - name: MONGO_URL
+              value: "mongodb://root-user:password@mongo:27017"
+            - name: MONGO_USER
+              value: "root-user"
+            - name: MONGO_PASS
+              value: "password"
+            - name: AWS_ROLE_ARN
+              value: "arn:aws:iam::780274387598:role/golang-application"
+            - name: AWS_NODE_ARN
+              value: "arn:aws:iam::780274387598:role/golang-application-ec2"
+            - name: AWS_SECURITY_GROUPS
+              value: "sg-a81f17b3"
+            - name: AWS_SUBNETS
+              value: "subnet-eeb6aca3,subnet-1dcd9a42,subnet-ad6a20cb"
+          volumeMounts:
+            - mountPath: "/root/.aws"
+              name: aws
+      volumes:
+        - name: aws
+          projected:
+            sources:
+            - secret:
+                name: aws-credentials-secret
+            - secret:
+                name: aws-config-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tenant-operations-controller-web
+  labels:
+    app: toc-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: toc-web
+  template:
+    metadata:
+      labels:
+        app: toc-web
+    spec:
+      containers:
+        - name: toc-web
+          image: radhakrishna0018/deployer-web:5.2
+          ports:
+            - containerPort: 8080

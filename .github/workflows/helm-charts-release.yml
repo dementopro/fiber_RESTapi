@@ -1,0 +1,39 @@
+name: Helm-release
+
+on:
+  push:
+    tags: 
+      - '*'
+    branches:
+      - 'master'
+      - 'release-*'
+
+  release:
+    types:
+      - published
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      charts: ${{ steps.filter.outputs.keycloak }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          base: ${{ github.ref }}
+          filters: |
+            charts:
+              - 'helm-charts/**'
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish Helm charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          charts_dir: helm-charts

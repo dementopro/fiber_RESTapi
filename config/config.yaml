@@ -1,0 +1,6 @@
+mongoClient:
+    database: testdb
+    collection: testcollection
+    connectTimeout: 5000
+    socketTimeout: 10000
+    serverSelection: 3000

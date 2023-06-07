@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mongodb:
+    build:
+      context: tools/mongodb
+      dockerfile: Dockerfile-mongodb
+    image: mongo-image:latest
+    container_name: mongodb
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=mydatabase
+    ports:
+      - 27017:27017
+    networks:
+      - mynetwork
+
+  toc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: toc:latest
+    container_name: toc
+    restart: always
+    environment:
+      - MONGODB_URL=mongodb:27017/?retryWrites=true&serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin
+      - MONGODB_USERNAME=admin
+      - MONGODB_PASSWORD=admin
+    ports:
+      - 8080:8080
+    networks:
+      - mynetwork
+#    depends_on:
+#      - mongodb
+
+networks:
+  mynetwork:
