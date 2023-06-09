@@ -1,4 +1,5 @@
 mongoClient:
+    MONGOURI: mongodb+srv://test:testtoc@cluster0.04jgpbc.mongodb.net/
     database: testdb
     collection: testcollection
     connectTimeout: 5000

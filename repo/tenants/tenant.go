@@ -3,17 +3,22 @@ package repository
 import (
 	"context"
 	"fmt"
+	"log"
+	"time"
+
 	"github.com/toc/config"
 	"github.com/toc/models"
 	mongo2 "github.com/toc/pkg/mongo-lib"
 	"go.mongodb.org/mongo-driver/bson"
-	"log"
-	"time"
 )
 
 type TenantRepository interface {
 	CreateTenant(tenant *models.Tenant) (*int64, error)
 	GetAllTenants() ([]models.Tenant, error)
+	DeleteTenantByID() ([]models.Tenant, error)
+	GetTenantByID() ([]models.Tenant, error)
+	UpdateTenant() ([]models.Tenant, error)
+	StatusTenant() ([]models.Tenant, error)
 }
 
 // tenantRepositoryImpl represents the repository for managing tenants in MongoDB
@@ -85,4 +90,24 @@ func (r *tenantRepositoryImpl) GetAllTenants() ([]models.Tenant, error) {
 	}
 
 	return results, nil
+}
+
+// DeleteTenentByID delete tenant by ID
+func (r *tenantRepositoryImpl) DeleteTenantByID() ([]models.Tenant, error) {
+
+}
+
+// GetTenantByID  Get Individual Tenant By ID
+func (r *tenantRepositoryImpl) GetTenantByID() ([]models.Tenant, error) {
+
+}
+
+// UpdateTenant
+func (r *tenantRepositoryImpl) UpdateTenant() ([]models.Tenant, error) {
+
+}
+
+// StatusTenant
+func (r *tenantRepositoryImpl) StatusTenant() ([]models.Tenant, error) {
+
 }

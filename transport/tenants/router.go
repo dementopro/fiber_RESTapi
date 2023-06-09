@@ -1,9 +1,8 @@
 package tenants
 
 import (
-	"github.com/gorilla/mux"
+	"github.com/gofiber/fiber/v2"
 	"github.com/toc/pkg/tenants"
-	"net/http"
 )
 
 type Services struct {
@@ -11,8 +10,11 @@ type Services struct {
 }
 
 // InitRoutes initializes the routes for the API
-func InitRoutes(router *mux.Router, svc Services) {
-	router.HandleFunc("/tenants", CreateTenantHandler(svc.TenantService)).Methods(http.MethodPost)
-	router.HandleFunc("/tenants", ListTenantsHandler(svc.TenantService)).Methods(http.MethodGet)
-	router.HandleFunc("/tenants/{id}", DeleteTenantByIDHandler(svc.TenantService)).Methods(http.MethodDelete)
+func InitRoutes(router fiber.Router, svc Services) {
+	router.Post("/tenant/create", CreateTenantHandler(svc.TenantService))
+	router.Get("/tenant/list", ListTenantsHandler(svc.TenantService))
+	router.Delete("/tenant/delete", DeleteTenantByIDHandler(svc.TenantService))
+	router.Get("/tenants/get/{id}", IndividualTenantHandler(svc.TenantService))
+	router.Put("/tenant/update", UpdateTenantHandler(svc.TenantService))
+	router.Post("/tenant/status", StatusTenantHandler(svc.TenantService))
 }
