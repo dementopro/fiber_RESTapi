@@ -25,7 +25,7 @@ services:
     container_name: toc
     restart: always
     environment:
-      - MONGODB_URL=mongodb:27017/?retryWrites=true&serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin
+      - MONGODURI=mongodb:27017/?retryWrites=true&serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin
       - MONGODB_USERNAME=admin
       - MONGODB_PASSWORD=admin
     ports:

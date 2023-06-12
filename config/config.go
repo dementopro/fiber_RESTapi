@@ -1,8 +1,9 @@
 package config
 
 import (
-	"gopkg.in/yaml.v3"
 	"io/ioutil"
+
+	"gopkg.in/yaml.v3"
 )
 
 // Config represents the configuration options for MongoDB.
@@ -11,6 +12,7 @@ type Config struct {
 }
 
 type MongoClient struct {
+	MONGOURI        string `yaml:"MONGOURI"`
 	Database        string `yaml:"database"`
 	Collection      string `yaml:"collection"`
 	ConnectTimeout  int    `yaml:"connectTimeout"`
@@ -40,6 +42,7 @@ func ReadConfigFromFile(filePath string) (Config, error) {
 // WriteConfigToFile writes the Config object to a YAML file.
 func WriteConfigToFile(filePath string) error {
 	config := Config{MongoClient: MongoClient{
+		MONGOURI:        "mongodb+srv://test:testtoc@cluster0.04jgpbc.mongodb.net",
 		Database:        "testdb",
 		Collection:      "testcollection",
 		ConnectTimeout:  5000,

@@ -1,12 +1,10 @@
 package main
 
 import (
-	"log"
-	"net/http"
 	"os"
 
-	"github.com/gorilla/mux"
-	"github.com/hashicorp/logutils"
+	"github.com/gofiber/fiber/v2"
+	"github.com/sirupsen/logrus"
 	"github.com/toc/config"
 	"github.com/toc/pkg/mongo-lib"
 	"github.com/toc/pkg/tenants"
@@ -24,12 +22,13 @@ func main() {
 	// Read the configuration from the YAML file
 	cfg, err := config.ReadConfigFromFile(filePath)
 	if err != nil {
-		logger.Printf("Error reading config file: %v\n", err)
+		logrus.Printf("Error reading config file: %v\n", err)
 		return
 	}
 
 	// Create a new instance of the router
-	router := mux.NewRouter()
+	// router := mux.NewRouter()
+	app := fiber.New()
 
 	// TODO: Use struct for any additional repo in future
 	repos := initRepos(logger, cfg)
@@ -39,7 +38,7 @@ func main() {
 		TenantService: tenants.NewTenantService(logger, cfg, repos),
 	}
 
-	transport_tenants.InitRoutes(router, srv)
+	transport_tenants.InitRoutes(app, srv)
 
 	// Start the HTTP server
 	port := os.Getenv("PORT")
@@ -47,27 +46,40 @@ func main() {
 		port = "7000"
 	}
 	logger.Printf("Server started on port %s\n", port)
-	logger.Fatal(http.ListenAndServe(":"+port, router))
+	logger.Fatal(app.Listen(":" + port))
 }
 
-func initRepos(logger *log.Logger, cfg config.Config) repository.TenantRepository {
-	mongoDB, err := mongo.NewMongoDB(cfg.MongoClient)
+func initRepos(logger *logrus.Logger, cfg config.Config) repository.TenantRepository {
+	mongoDB, err := mongo.NewMongoDB(cfg.MongoClient, logger)
 	if err != nil {
 		logger.Fatal(err.Error())
 	}
 	return repository.NewTenantRepository(logger, cfg, mongoDB)
 }
 
-func configureLogger() *log.Logger {
-	// Create a new log filter to configure the desired log level
-	filter := &logutils.LevelFilter{
-		Levels:   []logutils.LogLevel{"DEBUG", "INFO", "WARN", "ERROR"},
-		MinLevel: logutils.LogLevel(os.Getenv("LOG_LEVEL")),
-		Writer:   os.Stderr,
+func configureLogger() *logrus.Logger {
+	//Create a new Logrus logger
+	logger := logrus.New()
+
+	// Set the log level basedon the LOG_LEVEL environment variable
+	switch os.Getenv("LOG_LEVEL") {
+	case "DEBUG":
+		logger.SetLevel(logrus.DebugLevel)
+	case "INFO":
+		logger.SetLevel(logrus.InfoLevel)
+	case "WARN":
+		logger.SetLevel(logrus.WarnLevel)
+	case "ERROR":
+		logger.SetLevel(logrus.ErrorLevel)
+	default:
+		logger.SetLevel(logrus.InfoLevel)
 	}
 
-	// Create a new logger and set the log filter
-	logger := log.New(filter, "", log.LstdFlags)
+	//Set the output to Stderr and enable colored output
+	logger.SetOutput(os.Stderr)
+	logger.SetFormatter(&logrus.TextFormatter{
+		ForceColors: true,
+	})
 
 	return logger
 }

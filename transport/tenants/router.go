@@ -14,7 +14,7 @@ func InitRoutes(router fiber.Router, svc Services) {
 	router.Post("/tenant/create", CreateTenantHandler(svc.TenantService))
 	router.Get("/tenant/list", ListTenantsHandler(svc.TenantService))
 	router.Delete("/tenant/delete", DeleteTenantByIDHandler(svc.TenantService))
-	router.Get("/tenants/get/{id}", IndividualTenantHandler(svc.TenantService))
-	router.Put("/tenant/update", UpdateTenantHandler(svc.TenantService))
-	router.Post("/tenant/status", StatusTenantHandler(svc.TenantService))
+	router.Get("/tenant/get/:id", GetTenantByIDHandler(svc.TenantService))
+	router.Put("/tenant/update", UpdateTenantByIDHandler(svc.TenantService))
+	// router.Post("/tenant/status", StatusTenantHandler(svc.TenantService))
 }
