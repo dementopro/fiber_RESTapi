@@ -2,18 +2,18 @@ package models
 
 // Tenant represents the request payload for creating a tenant
 type Tenant struct {
-	TenantID       string       `json:"tenantId" bson:"tenant_id"`
-	Name           string       `json:"name" bson:"name"`
-	Type           string       `json:"type" bson:"type"`
-	State          string       `json:"state" bson:"state"`
-	Address        Address      `json:"address" bson:"address"`
-	PrimaryContact string       `json:"primaryContact" bson:"primary_contact"`
-	Admins         []Admin      `json:"admins" bson:"admins"`
-	Licenses       []License    `json:"licenses" bson:"licenses"`
-	Networks       []Network    `json:"networks" bson:"networks"`
-	Sites          []Site       `json:"sites" bson:"sites"`
-	DeviceCounts   DeviceCount  `json:"deviceCounts" bson:"device_counts"`
-	Organization   Organization `json:"organization" bson:"organization"`
+	TenantID       string  `json:"tenantId" bson:"tenant_id"`
+	Name           string  `json:"name" bson:"name"`
+	Type           string  `json:"type" bson:"type"`
+	State          string  `json:"state" bson:"state"`
+	Address        Address `json:"address" bson:"address"`
+	PrimaryContact string  `json:"primaryContact" bson:"primary_contact"`
+	Admins         []Admin `json:"admins" bson:"admins"`
+	// Licenses       []License    `json:"licenses" bson:"licenses"`
+	Networks     []Network    `json:"networks" bson:"networks"`
+	Sites        []Site       `json:"sites" bson:"sites"`
+	DeviceCounts DeviceCount  `json:"deviceCounts" bson:"device_counts"`
+	Organization Organization `json:"organization" bson:"organization"`
 }
 
 // Admin represents an administrator of a tenant
@@ -22,9 +22,9 @@ type Admin struct {
 }
 
 // License represents a license
-type License struct {
-	LicenseId string `json:"licenseId" bson:"license_id"`
-}
+// type License struct {
+// 	LicenseId string `json:"licenseId" bson:"license_id"`
+// }
 
 // Network represents a network
 type Network struct {
@@ -38,9 +38,9 @@ type Site struct {
 
 // DeviceCount represents a device count
 type DeviceCount struct {
-	GNB string `json:"gNB" bson:"gNB"`
-	ENB string `json:"eNB" bson:"eNB"`
-	CPE string `json:"CPE" bson:"CPE"`
+	GNB int64 `json:"gNB" bson:"gNB"`
+	ENB int64 `json:"eNB" bson:"eNB"`
+	CPE int64 `json:"CPE" bson:"CPE"`
 }
 
 // Organization represents the organization details of a tenant

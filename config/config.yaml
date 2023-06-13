@@ -1,5 +1,6 @@
 mongoClient:
-    MONGOURI: mongodb+srv://test:testtoc@cluster0.04jgpbc.mongodb.net/
+    # MONGOURI: mongodb+srv://test:testtoc@cluster0.04jgpbc.mongodb.net/
+    MONGOURI: "mongodb://localhost:27017"
     database: testdb
     collection: testcollection
     connectTimeout: 5000
