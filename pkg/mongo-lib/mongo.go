@@ -15,6 +15,7 @@ type MongoDB struct {
 	client     *mongo.Client
 	database   *mongo.Database
 	collection *mongo.Collection
+	Port       string `yaml:"port"`
 	logger     *logrus.Logger
 }
 
@@ -24,9 +25,10 @@ func NewMongoDB(cfg config.MongoClient, logger *logrus.Logger) (*MongoDB, error)
 	// Create a MongoDB connection string
 	// connectionString := fmt.Sprintf("mongodb://%s:%s@%s", username, password, url)
 	// connectionString := os.Getenv("MONGOURI")
+	connectionString := cfg.MONGOURI
 
 	// Set up options for the MongoDB client
-	clientOptions := options.Client().ApplyURI(EnvMongoURI())
+	clientOptions := options.Client().ApplyURI(connectionString)
 
 	// TODO: Load additional options from an external file (e.g., config.yaml)
 

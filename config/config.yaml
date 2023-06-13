@@ -6,3 +6,7 @@ mongoClient:
     connectTimeout: 5000
     socketTimeout: 10000
     serverSelection: 3000
+    port: 7000
+
+logrus:
+    LOG_LEVEL: {"DEBUG", "INFO", "WARN", "ERROR"}

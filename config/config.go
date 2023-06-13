@@ -18,6 +18,7 @@ type MongoClient struct {
 	ConnectTimeout  int    `yaml:"connectTimeout"`
 	SocketTimeout   int    `yaml:"socketTimeout"`
 	ServerSelection int    `yaml:"serverSelection"`
+	Port            string `yaml:"port"`
 }
 
 // ReadConfigFromFile reads the configuration from a YAML file and returns a Config object.

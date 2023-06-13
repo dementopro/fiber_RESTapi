@@ -130,7 +130,6 @@ func (r *tenantRepositoryImpl) GetTenantByID(tenantID string) (models.Tenant, er
 
 	// Perform the find operation
 	response, _ := r.mongoDB.ReadOne(ctx, tenantID, &responseType)
-
 	if response == nil {
 		return models.Tenant{}, nil
 	}

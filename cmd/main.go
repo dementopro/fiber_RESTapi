@@ -27,7 +27,6 @@ func main() {
 	}
 
 	// Create a new instance of the router
-	// router := mux.NewRouter()
 	app := fiber.New()
 
 	// TODO: Use struct for any additional repo in future
@@ -41,9 +40,9 @@ func main() {
 	transport_tenants.InitRoutes(app, srv)
 
 	// Start the HTTP server
-	port := os.Getenv("PORT")
+	port := cfg.MongoClient.Port
 	if port == "" {
-		port = "7000"
+		port = "3000"
 	}
 	logger.Printf("Server started on port %s\n", port)
 	logger.Fatal(app.Listen(":" + port))
