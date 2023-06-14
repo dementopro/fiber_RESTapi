@@ -43,9 +43,9 @@ type Site struct {
 
 // DeviceCount represents a device count
 type DeviceCount struct {
-	GNB int64 `json:"gNB" bson:"gNB"`
-	ENB int64 `json:"eNB" bson:"eNB"`
-	CPE int64 `json:"CPE" bson:"CPE"`
+	GNB int `json:"gNB" bson:"gNB"`
+	ENB int `json:"eNB" bson:"eNB"`
+	CPE int `json:"CPE" bson:"CPE"`
 }
 
 // Organization represents the organization details of a tenant

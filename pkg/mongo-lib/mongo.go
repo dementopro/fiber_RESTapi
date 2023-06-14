@@ -23,11 +23,10 @@ func NewMongoDB(cfg config.MongoClient, logger *logrus.Logger) (*MongoDB, error)
 	// Get the MongoDB connection details from environment variables
 	// Create a MongoDB connection string
 	// connectionString := fmt.Sprintf("mongodb://%s:%s@%s", username, password, url)
-	// connectionString := os.Getenv("MONGOURI")
-	connectionString := cfg.MONGOURI
+	// connectionString := cfg.MONGOURI
 
 	// Set up options for the MongoDB client
-	clientOptions := options.Client().ApplyURI(connectionString)
+	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 
 	// TODO: Load additional options from an external file (e.g., config.yaml)
 
@@ -46,10 +45,37 @@ func NewMongoDB(cfg config.MongoClient, logger *logrus.Logger) (*MongoDB, error)
 	}
 
 	// Set the database and collection
-	database := client.Database(cfg.Database)
-	collection := database.Collection(cfg.Collection)
+	database := client.Database("testdb")
+	// Create teh organization collection
+	_, err = database.Collection("organization").Indexes().CreateOne(
+		context.Background(),
+		mongo.IndexModel{
+			Keys: bson.M{
+				"org_name": 1,
+			},
+			Options: options.Index().SetUnique(true),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create the Device collection
+	_, err = database.Collection("Device").Indexes().CreateOne(
+		context.Background(),
+		mongo.IndexModel{
+			Keys: bson.M{
+				"device_id": 1,
+			},
+			Options: options.Index().SetUnique(true),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
 
 	// logrus.Println("Connected to MongoDB!")
+	collection := database.Collection("organization")
 	logger.Info("Connected to MongoDB!")
 
 	return &MongoDB{
@@ -72,47 +98,47 @@ func (db *MongoDB) Disconnect() error {
 }
 
 // Create inserts a document into the collection.
-// func (db *MongoDB) Create(ctx context.Context, document interface{}) (*mongo.InsertOneResult, error) {
-// 	result, err := db.collection.InsertOne(ctx, document)
-// 	if err != nil {
-// 		db.logger.WithError(err).Error("Failed to create document in MongoDB")
-// 		return nil, err
-// 	}
-// 	return result, nil
-// }
-
-func (db *MongoDB) Create(ctx context.Context, collectionName string, document interface{}) (*mongo.InsertOneResult, error) {
-	collectionNames, err := db.database.ListCollectionNames(ctx, bson.M{})
-	if err != nil {
-		db.logger.WithError(err).Error("Failed to list collection names in MongoDB database")
-		return nil, err
-	}
-
-	var collectionExists bool
-	for _, name := range collectionNames {
-		if name == collectionName {
-			collectionExists = true
-			break
-		}
-	}
-
-	if !collectionExists {
-		err = db.database.CreateCollection(ctx, collectionName)
-		if err != nil {
-			db.logger.WithError(err).Error("Failed to create collection in MongoDB database")
-			return nil, err
-		}
-	}
-
-	collection := db.database.Collection(collectionName)
-	result, err := collection.InsertOne(ctx, document)
+func (db *MongoDB) Create(ctx context.Context, document interface{}) (*mongo.InsertOneResult, error) {
+	result, err := db.collection.InsertOne(ctx, document)
 	if err != nil {
 		db.logger.WithError(err).Error("Failed to create document in MongoDB")
 		return nil, err
 	}
-
 	return result, nil
 }
+
+// func (db *MongoDB) Create(ctx context.Context, collectionName string, document interface{}) (*mongo.InsertOneResult, error) {
+// 	collectionNames, err := db.database.ListCollectionNames(ctx, bson.M{})
+// 	if err != nil {
+// 		db.logger.WithError(err).Error("Failed to list collection names in MongoDB database")
+// 		return nil, err
+// 	}
+
+// 	var collectionExists bool
+// 	for _, name := range collectionNames {
+// 		if name == collectionName {
+// 			collectionExists = true
+// 			break
+// 		}
+// 	}
+
+// 	if !collectionExists {
+// 		err = db.database.CreateCollection(ctx, collectionName)
+// 		if err != nil {
+// 			db.logger.WithError(err).Error("Failed to create collection in MongoDB database")
+// 			return nil, err
+// 		}
+// 	}
+
+// 	collection := db.database.Collection(collectionName)
+// 	result, err := collection.InsertOne(ctx, document)
+// 	if err != nil {
+// 		db.logger.WithError(err).Error("Failed to create document in MongoDB")
+// 		return nil, err
+// 	}
+
+// 	return result, nil
+// }
 
 // Read retrieves documents from the collection based on the provided filter.
 func (db *MongoDB) Read(ctx context.Context, filter interface{}, result interface{}) ([]interface{}, error) {

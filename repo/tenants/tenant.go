@@ -59,7 +59,7 @@ func (r *tenantRepositoryImpl) CreateTenant(tenant *models.Tenant) (*string, err
 	tenant.CreatedAt = now
 	tenant.UpdatedAt = now
 	tenant.CreatedBy = tenant.Admins[0].UserId
-	_, err := r.mongoDB.Create(context.Background(), r.config.MongoClient.Collection, tenant)
+	_, err := r.mongoDB.Create(context.Background(), tenant)
 
 	if err != nil {
 		err_create := "Failed to create tenant"
