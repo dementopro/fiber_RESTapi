@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/sirupsen/logrus"
 	"github.com/toc/config"
@@ -15,7 +16,6 @@ type MongoDB struct {
 	client     *mongo.Client
 	database   *mongo.Database
 	collection *mongo.Collection
-	Port       string `yaml:"port"`
 	logger     *logrus.Logger
 }
 
@@ -73,12 +73,46 @@ func (db *MongoDB) Disconnect() error {
 }
 
 // Create inserts a document into the collection.
-func (db *MongoDB) Create(ctx context.Context, document interface{}) (*mongo.InsertOneResult, error) {
-	result, err := db.collection.InsertOne(ctx, document)
+// func (db *MongoDB) Create(ctx context.Context, document interface{}) (*mongo.InsertOneResult, error) {
+// 	result, err := db.collection.InsertOne(ctx, document)
+// 	if err != nil {
+// 		db.logger.WithError(err).Error("Failed to create document in MongoDB")
+// 		return nil, err
+// 	}
+// 	return result, nil
+// }
+
+func (db *MongoDB) Create(ctx context.Context, collectionName string, document interface{}) (*mongo.InsertOneResult, error) {
+	collectionNames, err := db.database.ListCollectionNames(ctx, bson.M{})
+	fmt.Println("Here is the debug--------------------->", collectionNames)
+	if err != nil {
+		db.logger.WithError(err).Error("Failed to list collection names in MongoDB database")
+		return nil, err
+	}
+
+	var collectionExists bool
+	for _, name := range collectionNames {
+		if name == collectionName {
+			collectionExists = true
+			break
+		}
+	}
+
+	if !collectionExists {
+		err = db.database.CreateCollection(ctx, collectionName)
+		if err != nil {
+			db.logger.WithError(err).Error("Failed to create collection in MongoDB database")
+			return nil, err
+		}
+	}
+
+	collection := db.database.Collection(collectionName)
+	result, err := collection.InsertOne(ctx, document)
 	if err != nil {
 		db.logger.WithError(err).Error("Failed to create document in MongoDB")
 		return nil, err
 	}
+
 	return result, nil
 }
 

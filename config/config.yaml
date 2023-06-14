@@ -2,11 +2,11 @@ mongoClient:
     # MONGOURI: mongodb+srv://test:testtoc@cluster0.04jgpbc.mongodb.net/
     MONGOURI: "mongodb://localhost:27017"
     database: testdb
-    collection: testcollection
+    collection: organization
+    collection_device: Device
     connectTimeout: 5000
     socketTimeout: 10000
     serverSelection: 3000
-    # port: 7000
 
 logrus:
     LOG_LEVEL: {"DEBUG", "INFO", "WARN", "ERROR"}

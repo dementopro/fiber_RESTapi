@@ -12,12 +12,13 @@ type Config struct {
 }
 
 type MongoClient struct {
-	MONGOURI        string `yaml:"MONGOURI"`
-	Database        string `yaml:"database"`
-	Collection      string `yaml:"collection"`
-	ConnectTimeout  int    `yaml:"connectTimeout"`
-	SocketTimeout   int    `yaml:"socketTimeout"`
-	ServerSelection int    `yaml:"serverSelection"`
+	MONGOURI          string `yaml:"MONGOURI"`
+	Database          string `yaml:"database"`
+	Collection        string `yaml:"collection"`
+	Collection_Device string `yaml:"collection_device"`
+	ConnectTimeout    int    `yaml:"connectTimeout"`
+	SocketTimeout     int    `yaml:"socketTimeout"`
+	ServerSelection   int    `yaml:"serverSelection"`
 }
 
 // ReadConfigFromFile reads the configuration from a YAML file and returns a Config object.
@@ -44,7 +45,7 @@ func WriteConfigToFile(filePath string) error {
 	config := Config{MongoClient: MongoClient{
 		MONGOURI:        "mongodb+srv://test:testtoc@cluster0.04jgpbc.mongodb.net",
 		Database:        "testdb",
-		Collection:      "testcollection",
+		Collection:      "organization",
 		ConnectTimeout:  5000,
 		SocketTimeout:   10000,
 		ServerSelection: 3000,

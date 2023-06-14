@@ -14,6 +14,11 @@ type Tenant struct {
 	Sites        []Site       `json:"sites" bson:"sites"`
 	DeviceCounts DeviceCount  `json:"deviceCounts" bson:"device_counts"`
 	Organization Organization `json:"organization" bson:"organization"`
+	CreatedAt    string       `json:"createdAt" bson:"createdAt"`
+	CreatedBy    string       `json:"createdBy" bson:"createdBy"`
+	UpdatedAt    string       `json:"updatedAt" bson:"updatedAt"`
+	UpdatedBy    string       `json:"updatedBy" bson:"updatedBy"`
+	DeletedAt    string       `json:"deletedAt" bson:"deletedAt"`
 }
 
 // Admin represents an administrator of a tenant

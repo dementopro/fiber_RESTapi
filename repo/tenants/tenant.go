@@ -54,7 +54,13 @@ func (r *tenantRepositoryImpl) CreateTenant(tenant *models.Tenant) (*string, err
 	}
 
 	// Insert into mongo db
-	_, err := r.mongoDB.Create(context.Background(), tenant)
+
+	now := time.Now().Format(time.RFC3339)
+	tenant.CreatedAt = now
+	tenant.UpdatedAt = now
+	tenant.CreatedBy = tenant.Admins[0].UserId
+	_, err := r.mongoDB.Create(context.Background(), r.config.MongoClient.Collection, tenant)
+
 	if err != nil {
 		err_create := "Failed to create tenant"
 		r.logger.Error(err_create)
@@ -149,6 +155,12 @@ func (r *tenantRepositoryImpl) UpdateTenantByID(tenantID string, tenant *models.
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(r.config.MongoClient.ConnectTimeout)*time.Second)
 	defer cancel()
+
+	tenant.UpdatedBy = tenant.Admins[0].UserId
+
+	//Set the updateAt field to the current time
+	tenant.UpdatedAt = time.Now().Format(time.RFC3339)
+	//Use $set operator
 
 	// Perform the find operation
 	_, err := r.mongoDB.UpdateOne(ctx, tenantID, tenant)
