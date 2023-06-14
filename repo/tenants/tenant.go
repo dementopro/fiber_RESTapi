@@ -160,7 +160,14 @@ func (r *tenantRepositoryImpl) UpdateTenantByID(tenantID string, tenant *models.
 
 	//Set the updateAt field to the current time
 	tenant.UpdatedAt = time.Now().Format(time.RFC3339)
-	//Use $set operator
+
+	// Set the createdAt and createdBy fields if they are not already set
+	if tenant.CreatedAt == "" {
+		tenant.CreatedAt = time.Now().Format(time.RFC3339)
+	}
+	if tenant.CreatedBy == "" {
+		tenant.CreatedBy = tenant.Admins[0].UserId
+	}
 
 	// Perform the find operation
 	_, err := r.mongoDB.UpdateOne(ctx, tenantID, tenant)

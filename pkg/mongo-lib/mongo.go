@@ -2,7 +2,6 @@ package mongo
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/sirupsen/logrus"
 	"github.com/toc/config"
@@ -84,7 +83,6 @@ func (db *MongoDB) Disconnect() error {
 
 func (db *MongoDB) Create(ctx context.Context, collectionName string, document interface{}) (*mongo.InsertOneResult, error) {
 	collectionNames, err := db.database.ListCollectionNames(ctx, bson.M{})
-	fmt.Println("Here is the debug--------------------->", collectionNames)
 	if err != nil {
 		db.logger.WithError(err).Error("Failed to list collection names in MongoDB database")
 		return nil, err

@@ -40,7 +40,7 @@ func main() {
 	transport_tenants.InitRoutes(app, srv)
 
 	// Start the HTTP server
-	port := "7000"
+	port := cfg.MongoClient.Port
 	logger.Printf("Server started on port %s\n", port)
 	logger.Fatal(app.Listen(":" + port))
 }
