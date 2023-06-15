@@ -10,4 +10,4 @@ mongoClient:
     port: 7000
 
 logrus:
-    LOG_LEVEL: {"DEBUG", "INFO", "WARN", "ERROR"}
+    LOG_LEVEL: {"PANIC", "FATAL", DEBUG", "INFO", "WARN", "ERROR", "TRACE"}

@@ -59,6 +59,10 @@ func configureLogger() *logrus.Logger {
 
 	// Set the log level basedon the LOG_LEVEL environment variable
 	switch os.Getenv("LOG_LEVEL") {
+	case "PANIC":
+		logger.SetLevel(logrus.PanicLevel)
+	case "FATAL":
+		logger.SetLevel(logrus.FatalLevel)
 	case "DEBUG":
 		logger.SetLevel(logrus.DebugLevel)
 	case "INFO":
@@ -67,6 +71,8 @@ func configureLogger() *logrus.Logger {
 		logger.SetLevel(logrus.WarnLevel)
 	case "ERROR":
 		logger.SetLevel(logrus.ErrorLevel)
+	case "TRACE":
+		logger.SetLevel(logrus.TraceLevel)
 	default:
 		logger.SetLevel(logrus.InfoLevel)
 	}
